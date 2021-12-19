@@ -1,2 +1,2 @@
-TARGET=main
+TARGET=manual
 include ./Makefile.include
