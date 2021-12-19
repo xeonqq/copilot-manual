@@ -8,10 +8,10 @@
 % Packages used in this example
 \usepackage{graphicx}  % for including images
 \usepackage{microtype} % for typographical enhancements
+\usepackage{wrapfig} % for typographical enhancements
 \usepackage{minted}    % for code listings
 \usepackage{amsmath}   % for equations and mathematics
 \setminted{style=friendly,fontsize=\small}
-\renewcommand{\listoflistingscaption}{List of Code Listings}
 \usepackage{hyperref}  % for hyperlinks
 \usepackage[a4paper,top=4.2cm,bottom=4.2cm,left=3.5cm,right=3.5cm]{geometry} % for setting page size and margins
 
@@ -24,14 +24,13 @@
 
 \version{0.2}
 \author{Qian Qian}
-\softwarelogo{\includegraphics[width=8cm]{logo}}
+\softwarelogo{\includegraphics[width=8cm]{pics/logo.png}}
 
 \begin{document}
 
 \maketitle
 
 \tableofcontents
-\listoflistings
 \newpage
 
 \section{Introduction}
@@ -41,35 +40,95 @@ Moreover, different than any dashcam on the market, CoPilot has also traffic lig
 
 One more thing, when parked, a survailence mode can be activated, it will record the scene if motion is detected in the camera view. This gives your car another safety guard when parked in public, and collect evidence for hit-and-run incidence.
 
+\section{Hardware Overview}
+CoPilot consists of a 8MP front facing camera as its main sensor, in the enclosure it contains a raspberrypi 3 and a real time clock. Two speakers are located on the sides for mode indication and voice alerts.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=.8\textwidth]{pics/front.jpg}
+  \caption[]{CoPilot front.}
+  \label{fig:front}
+\end{figure}
 
-\begin{table}
+\clearpage
+On the back is a machine learning hardware accelerator for fast inference, and a Mode Selection button for switching between different modes. 
+A small button for muting the voice alert is also available.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=.8\textwidth]{pics/back.png}
+  \caption[]{CoPilot front.}
+  \label{fig:front}
+\end{figure}
+
+
+\section{Mode Selection}
+
+
+\begin{table}[h!]
 \centering
-\begin{tabular}{l|r}
-Item & Quantity \\\hline
-Widgets & 42 \\
-Gadgets & 13
+\begin{tabular}{c|c|c}
+    Mode & Indicated Sound & Model Section Button\\\hline
+    Basic Alert Mode (Default)& "Visibility Clear" & Press once \\\hline
+    Experiment Alert Mode & "Speed to Full" & Press twice \\\hline
+Surveilance Mode & "Standing By" & Press three times 
 \end{tabular}
-\caption{\label{tab:widgets}An example table.}
+\caption{\label{tab:mode}Mode Selection.}
 \end{table}
 
+\newcommand{\centered}[1]{\begin{tabular}{l} #1 \end{tabular}}
 
-This document is an example of a software manual created using \LaTeX\ and Overleaf. It provides a nice clean format for producing this type of technical document. 
+\subsection{Basic Alert Mode (Default)}
+A subset of functionalities of the traffic light alert system will be activated.
+\begin{table}[ht]
+\caption{Basic alerts}
+\centering
+\begin{tabular}{c|c}
+\hline
+    Scenario & Voice Alert \\
+\hline
+    \includegraphics[height=0.15\textwidth]{pics/red_to_green.png} & \begin{tabular}{c} "Ready go"/"Green go go go" \end{tabular} \\
+\hline
+     \includegraphics[height=0.15\textwidth]{pics/green_to_yellow.png} & \begin{tabular}{c} "Yellow no rush"\end{tabular} \\
+\hline
+\end{tabular}
+\label{tab:gt}
+\end{table}
 
-Simply start writing your document and use the Recompile button to view the updated PDF preview. Examples of commonly used commands and features can be found in the sections below, to help you get started.
+\subsection{Experiment Alert Mode}
+Full functionalities of the traffic light alert system will be activated. It includes all the alerts from Basic Alert Mode, but also has more alerts shown below, where as soon as CoPilot
+sees the first appearance of a traffic light it will alert its state.
 
-To change the logo shown on the front page, simply upload your own logo image file (via the file-tree menu) to replace the default logo.pdf file. 
+Note that due to the early stage of development, the false positive alert can significantly increase. Consequently it might disturb the driver while driving. Therefore this mode is not the default mode. 
 
-Once you're familiar with the editor, you can find various project settings in the Overleaf menu, accessed via the button in the very top left of the editor. To view tutorials, user guides, and further documentation, please visit our \doclink{https://www.overleaf.com/learn}{help library}. If you haven't used \LaTeX\ before, our \doclink{https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes}{Learn \LaTeX\ in 30 minutes} tutorial is an excellent place to start.
+\begin{table}[ht]
+\caption{Additional alerts}
+\centering
+\begin{tabular}{c|c}
+\hline
+    Scenario & Voice Alert \\
+\hline
+    \includegraphics[height=0.15\textwidth]{pics/green.png} & \begin{tabular}{c} "Green go go go" \end{tabular} \\
+\hline
+     \includegraphics[height=0.15\textwidth]{pics/red.png} & \begin{tabular}{c} "Attention Red"\end{tabular} \\
+\hline
+\end{tabular}
+\label{tab:gt}
+\end{table}
 
-For large documents, it can be useful to split the document into multiple source files.
-Double-clicking on text in Overleaf's PDF preview will take you directly to the corresponding code in the editor.
+\clearpage
+\subsection{Surveilance Mode}
 
-\section{Including code samples}
+\begin{wrapfigure}{l}{5.5cm}
+%\begin{figure}[h!]
+  \includegraphics[width=.3\textwidth]{pics/motion_detection.jpg}
+  \caption[]{Record on motion detection.}
+%\end{figure}
+\end{wrapfigure}
+Suitable for parked scenario, no traffic light alert in this Mode. 
 
-\input{code-samples}
+A recording of the scene will be created only when motion is detected.
 
-\section{Some further examples to get started}
+Note, in this mode, you might need to use an extenal power source like a power bank, since the in car USB power supply usually turns off when car is parked.
 
-\input{further-examples}
+
 
 \end{document}
